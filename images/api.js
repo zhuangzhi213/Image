@@ -3,7 +3,7 @@
 export default async function handler(req, res) {
   const { filename } = req.query;
   // 替换为实际的GitLab图片URL模板
-  const gitlabImageUrlTemplate = 'https://gitlab.com/zhuangzhi213/hexo-images/raw/main/images/';
+  const gitlabImageUrlTemplate = 'https://gitlab.com/zhuangzhi213/hexo-images/raw/main/images/card';
   
   try {
     // 构建完整的GitLab图片URL
