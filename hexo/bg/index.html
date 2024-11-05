@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+</head>
+<script>
+// 假设你有1到N张图片，这里以10张为例
+var totalImages = 21;
+
+// 生成一个介于1和totalImages之间的随机数
+var randomImageNumber = Math.floor(Math.random() * totalImages) + 1;
+
+// 构建图片路径
+var imagePath = 'bg' + randomImageNumber + '.webp';
+
+// 设置body的背景图片
+window.location.href = imagePath;
+</script>
+</html>
