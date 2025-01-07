@@ -1,9 +1,5 @@
 {
-    "functions": {
-      "zz.js": {
-        "maxDuration": 10
-      }
-    },
+    "version": 2,
     "routes": [
       { "src": "/(.*)", "dest": "/zz.js" }
     ]

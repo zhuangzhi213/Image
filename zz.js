@@ -1,4 +1,7 @@
-export default async function onRequest({ request, next }) {
+export default async function middleware(req, res) {
+    console.log('Request Host:', req.headers.host);
+    console.log('Request Origin:', req.headers.origin || req.headers.referer);
+  
     // 定义允许的顶级域名列表和对应的子域名模式
     const ALLOWED_DOMAINS = [
       'zlog.us.kg',
@@ -10,8 +13,8 @@ export default async function onRequest({ request, next }) {
     const DOMAIN_PATTERN = new RegExp(`^([a-zA-Z0-9-]+\\.)?(${ALLOWED_DOMAINS.join('|')})$`);
   
     // 获取请求的来源信息
-    const host = request.headers.get('Host');
-    const origin = request.headers.get('Origin') || request.headers.get('Referer');
+    const host = req.headers.host;
+    const origin = req.headers.origin || req.headers.referer;
   
     // 检查 Host 是否匹配指定的顶级域名或子域名模式
     const isAllowedHost = DOMAIN_PATTERN.test(host);
@@ -22,9 +25,12 @@ export default async function onRequest({ request, next }) {
       DOMAIN_PATTERN.test(new URL(origin).hostname)
     );
   
+    console.log('isAllowedHost:', isAllowedHost);
+    console.log('isAllowedOrigin:', isAllowedOrigin);
+  
     if (isAllowedHost && isAllowedOrigin) {
-      return next();
+      return await res.next();
     } else {
-      return new Response('Forbidden', { status: 403 });
+      return res.status(403).send('Forbidden');
     }
   }
