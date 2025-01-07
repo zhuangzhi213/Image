@@ -1,0 +1,10 @@
+{
+    "functions": {
+      "zz.js": {
+        "maxDuration": 10
+      }
+    },
+    "routes": [
+      { "src": "/(.*)", "dest": "/zz.js" }
+    ]
+  }
