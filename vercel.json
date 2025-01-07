@@ -1,6 +1,6 @@
 {
     "version": 2,
     "routes": [
-      { "src": "/(.*)", "dest": "/zz.js" }
+      { "src": "/(.*)", "dest": "/middleware/zz.js" }
     ]
   }
