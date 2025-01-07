@@ -1,4 +1,12 @@
 export default async function middleware(req, res) {
+    // 定义静态资源路径前缀
+    const STATIC_PATH_PREFIX = '/hexo';
+  
+    // 如果请求是静态资源，直接放行
+    if (req.url.startsWith(STATIC_PATH_PREFIX)) {
+      return await res.next();
+    }
+  
     console.log('Request Host:', req.headers.host);
     console.log('Request Origin:', req.headers.origin || req.headers.referer);
   
