@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>琅環书生·封面</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <link rel="icon" href="https://www.zlog.us.kg/img/favicon.ico" type="image/x-icon">
+</head>
+<style>
+.container {
+    text-align: center;
+    top: 50%;
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+.controls {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px; /* 控制各元素之间的间距 */
+    margin-bottom: 20px;
+}
+.controls input, .controls button {
+    vertical-align: middle; /* 确保垂直居中 */
+    height: 23px;
+    border-radius: 8px;
+    border: #E3AD92 1px solid;
+}
+.zzmeta {
+    position: relative;
+    background-image: linear-gradient(0deg, #f3fbff 1%, #45BA97 99%);
+    height: 308px;
+    width: 700px;
+    display: inline-block;
+}
+.zzmeta .zztext {
+    font-size: 8rem;
+    font-family: MiSans;
+    color: #f3fbffed;
+    font-weight: 900;
+    text-shadow: 
+        0 1px 1px rgba(0, 0, 0, 0.5),
+        10px 10px 10px rgba(0, 0, 0, 0.5);
+    width: 100%;
+    line-height: 308px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+}
+.zzmeta .zzsvg {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    height: auto;
+    width: 200px;
+}
+/* 确保保存按钮也参与flex布局 */
+#saveImage {
+    margin-top: 0;
+}
+</style>
+<body>
+<div class="container">
+    <!-- 将保存按钮移动到controls容器内 -->
+    <div class="controls">
+        <input type="text" id="textValue" placeholder="文本 内容" />
+        <input type="file" id="imageUpload" accept="image/*" />
+        <input type="color" id="colorPicker" value="#45BA97" />
+        <button id="updateContent">更新内容</button>
+        <button id="saveImage">保存为图片</button>
+    </div>
+    <div class="zzmeta" id="zzmeta">
+        <div class="zztext" id="zztext">琅環 书生</div>
+        <img class="zzsvg" id="zzsvg" src="https://images.zlog.us.kg/hexo/favicon.webp" alt="svg">
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', (event) => {
+    const updateContent = document.getElementById('updateContent');
+    const imageUpload = document.getElementById('imageUpload');
+    const colorPicker = document.getElementById('colorPicker'); // 获取颜色选择器
+    const zzmeta = document.getElementById('zzmeta');
+
+    // 添加事件监听器来预览上传的图片
+    imageUpload.addEventListener('change', function(event) {
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                document.getElementById('zzsvg').src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+    });
+
+    // 监听颜色选择器的 input 事件以实现实时更新
+    colorPicker.addEventListener('input', function() {
+        const selectedColor = this.value;
+        zzmeta.style.backgroundImage = `linear-gradient(0deg, #f3fbff 1%, ${selectedColor} 99%)`;
+    });
+
+    // 更新内容按钮点击事件处理程序
+    updateContent.addEventListener('click', function() {
+        document.getElementById('zztext').textContent = document.getElementById('textValue').value;
+        // 背景颜色已经在颜色选择器的 input 事件中实时更新了，所以这里不需要再设置背景颜色
+    });
+
+    // 保存为图片按钮点击事件处理程序（保持不变）
+    document.getElementById('saveImage').addEventListener('click', function() {
+        var element = document.querySelector('.zzmeta');
+        html2canvas(element).then(function(canvas) {
+            // 移除所有旧的下载链接
+            var oldLinks = document.querySelectorAll('a[href^="data:"]');
+            oldLinks.forEach(function(oldLink) {
+                document.body.removeChild(oldLink);
+            });
+
+            var link = document.createElement('a');
+            link.href = canvas.toDataURL("image/png");
+            link.download = 'zzmeta.png';
+            document.body.appendChild(link); // 确保链接被添加到DOM中
+
+            // 延迟一小段时间再移除链接，以确保下载完成
+            setTimeout(function() {
+                link.click();
+                document.body.removeChild(link);
+            }, 100); // 100毫秒的延迟
+        });
+    });
+});
+</script>
+</body>
+</html>
